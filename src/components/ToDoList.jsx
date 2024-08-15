@@ -1,20 +1,36 @@
 import React, { useState } from 'react';
+import { useAuth } from './AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function ToDoList() {
+  const { isAuthenticated, userName } = useAuth();
+  const navigate = useNavigate();
+
+
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [editIndex, setEditIndex] = useState(null);
   const [editTaskValue, setEditTaskValue] = useState("");
+  const [taskError, setTaskError] = useState("");
+
+  if (!isAuthenticated) {
+    navigate('/');
+    return null;
+  }
 
   function handleInputChange(event) {
     setNewTask(event.target.value);
+    setTaskError("");
   }
 
   function addTask() {
-    if (newTask.trim() !== '') {
-      setTasks([...tasks, { text: newTask, done: false }]);
-      setNewTask("");
+    if (newTask.trim() === '') {
+      setTaskError(" ");
+      return;
     }
+    setTasks([...tasks, { text: newTask, done: false }]);
+    setNewTask("");
+    setTaskError("");
   }
 
   function deleteTask(index) {
@@ -23,8 +39,8 @@ function ToDoList() {
   }
 
   function startEditTask(index) {
-    setEditIndex(index); // Armazena o índice da tarefa que está sendo editada
-    setEditTaskValue(tasks[index].text); // Preenche o input de edição com o valor atual da tarefa
+    setEditIndex(index);
+    setEditTaskValue(tasks[index].text);
   }
 
   function saveEditTask() {
@@ -32,13 +48,13 @@ function ToDoList() {
       i === editIndex ? { ...task, text: editTaskValue } : task
     );
     setTasks(updatedTasks);
-    setEditIndex(null); // Finaliza o modo de edição
-    setEditTaskValue(""); // Limpa o input de edição
+    setEditIndex(null);
+    setEditTaskValue("");
   }
 
   function cancelEditTask() {
-    setEditIndex(null); // Cancela a edição
-    setEditTaskValue(""); // Limpa o input de edição
+    setEditIndex(null);
+    setEditTaskValue("");
   }
 
   function doneTask(index) {
@@ -51,6 +67,7 @@ function ToDoList() {
   return (
     <div className="to-do-list">
       <h1>To-Do List</h1>
+      <p>Bem-vindo, {userName}!</p>
 
       <div>
         <input
@@ -58,6 +75,7 @@ function ToDoList() {
           placeholder='Enter a task...'
           value={newTask}
           onChange={handleInputChange}
+          className={taskError ? 'error-input' : ''} // Adiciona classe condicionalmente
         />
         <button
           className='add-button'
@@ -65,6 +83,7 @@ function ToDoList() {
         >
           Add
         </button>
+        {taskError && <p className="error-message">{taskError}</p>} {/* Exibe mensagem de erro */}
       </div>
 
       <ol>
