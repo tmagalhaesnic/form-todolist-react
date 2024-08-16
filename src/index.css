@@ -169,15 +169,11 @@
   cursor: pointer;
   font-size: 16px; /* Ajusta o tamanho da fonte do botão */
   box-sizing: border-box; /* Inclui padding e bordas na largura total */
+  animation: blink-border 0.5s linear;
 }
 
 .submit-buttons:hover {
   background-color: #45a049;
-}
-
-.error {
-  color: red;
-  margin-top: 10px; /* Espaço acima do texto de erro */
 }
 
 /* Estilo para o campo de input com erro */
@@ -186,17 +182,16 @@
   animation: blink-border 0.5s linear;
 }
 
-@keyframes blink-border {
-  0% { border-color: red; }
-  50% { border-color: transparent; }
-  100% { border-color: red; }
-}
-
 /* Estilo para a mensagem de erro */
 .error-message {
   color: red;
   font-size: 12px;
   margin-top: 5px;
+  margin-bottom: 10px; 
 }
 
-
+@keyframes blink-border {
+  0% { border-color: red; }
+  50% { border-color: transparent; }
+  100% { border-color: red; }
+}

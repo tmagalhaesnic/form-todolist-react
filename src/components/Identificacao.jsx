@@ -31,7 +31,7 @@ function Identificacao() {
         onChange={handleChange}
       />
       <button className='submit-buttons' onClick={handleSubmit}>Entrar</button>
-      {error && <p className="error">{error}</p>}
+      {error && <p className="error-message ">{error}</p>}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,17 +6,17 @@ function ToDoList() {
   const { isAuthenticated, userName } = useAuth();
   const navigate = useNavigate();
 
-
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [editIndex, setEditIndex] = useState(null);
   const [editTaskValue, setEditTaskValue] = useState("");
   const [taskError, setTaskError] = useState("");
 
-  if (!isAuthenticated) {
-    navigate('/');
-    return null;
-  }
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
   function handleInputChange(event) {
     setNewTask(event.target.value);
@@ -72,10 +72,10 @@ function ToDoList() {
       <div>
         <input
           type='text'
-          placeholder='Enter a task...'
+          placeholder='Insira uma task...'
           value={newTask}
           onChange={handleInputChange}
-          className={taskError ? 'error-input' : ''} // Adiciona classe condicionalmente
+          className={taskError ? 'error-input' : ''}
         />
         <button
           className='add-button'
@@ -83,7 +83,7 @@ function ToDoList() {
         >
           Add
         </button>
-        {taskError && <p className="error-message">{taskError}</p>} {/* Exibe mensagem de erro */}
+        {taskError && <p className="error-message">{taskError}</p>}
       </div>
 
       <ol>
