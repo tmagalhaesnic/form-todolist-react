@@ -3,7 +3,7 @@ import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 function ToDoList() {
-  const { isAuthenticated,logout } = useAuth();
+  const { isAuthenticated, userName,logout } = useAuth();
   const navigate = useNavigate();
 
   const [tasks, setTasks] = useState([]);
@@ -77,6 +77,7 @@ function ToDoList() {
      <div className="to-do-list">
       <header className="header">
         <h1>Lista de Tarefas</h1>
+        <p>Bem-vindo, {userName}!</p>
       </header>
 
       <div>
