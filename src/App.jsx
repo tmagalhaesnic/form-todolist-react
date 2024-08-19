@@ -11,7 +11,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Identificacao />} />
-          <Route path="/todos" element={<ProtectedRoute element={<ToDoList />} />} />
+          <Route path="/home" element={<ProtectedRoute element={<ToDoList />} />} />
         </Routes>
       </Router>
     </AuthProvider>

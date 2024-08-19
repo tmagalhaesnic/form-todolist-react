@@ -3,7 +3,7 @@ import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 function ToDoList() {
-  const { isAuthenticated, userName } = useAuth();
+  const { isAuthenticated,logout } = useAuth();
   const navigate = useNavigate();
 
   const [tasks, setTasks] = useState([]);
@@ -11,6 +11,7 @@ function ToDoList() {
   const [editIndex, setEditIndex] = useState(null);
   const [editTaskValue, setEditTaskValue] = useState("");
   const [taskError, setTaskError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -64,10 +65,19 @@ function ToDoList() {
     setTasks(updatedTasks);
   }
 
+  function handleSearchChange(event){
+    setSearchTerm(event.target.value);
+  }
+
+  const filteredTasks = tasks.filter(task =>
+    task.text.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+  );
+ 
   return (
-    <div className="to-do-list">
-      <h1>To-Do List</h1>
-      <p>Bem-vindo, {userName}!</p>
+     <div className="to-do-list">
+      <header className="header">
+        <h1>Lista de Tarefas</h1>
+      </header>
 
       <div>
         <input
@@ -85,9 +95,17 @@ function ToDoList() {
         </button>
         {taskError && <p className="error-message">{taskError}</p>}
       </div>
+      
+      <input
+        type="text"
+        placeholder="Pesquisar tarefas..."
+        value={searchTerm}
+        onChange={handleSearchChange}
+        className="search-input"
+      />
 
       <ol>
-        {tasks.map((task, index) =>
+        {filteredTasks.map((task, index) =>
           <li key={index} className={task.done ? 'done' : ''}>
             {editIndex === index ? (
               <div className="editing-container">
@@ -126,6 +144,7 @@ function ToDoList() {
           </li>
         )}
       </ol>
+      <button className="logout-button"onClick={logout}>Logout</button>
     </div>
   );
 }

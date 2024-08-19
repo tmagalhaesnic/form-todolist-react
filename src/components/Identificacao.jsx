@@ -15,7 +15,7 @@ function Identificacao() {
   function handleSubmit() {
     if (input.trim() !== '') {
       login(input);
-      navigate('/todos');
+      navigate('/home');
     } else {
       setError('Por favor, insira seu nome ou e-mail.');
     }
